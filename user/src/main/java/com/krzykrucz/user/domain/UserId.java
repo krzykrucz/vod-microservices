@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-public class UserId implements Serializable{
+public class UserId implements Serializable {
 
     private final UUID uuid;
 }

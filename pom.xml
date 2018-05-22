@@ -13,7 +13,7 @@
     <modules>
         <module>discovery-service</module>
         <module>config-service</module>
-        <module>movies</module>
+        <module>videos</module>
         <module>payment</module>
         <module>user</module>
         <module>gateway-service</module>
