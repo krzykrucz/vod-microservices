@@ -5,6 +5,8 @@ import com.krzykrucz.movies.domain.*
 import com.krzykrucz.movies.infrastructure.viewer.CustomerClient
 import com.krzykrucz.movies.infrastructure.viewer.CustomerDTO
 import com.krzykrucz.movies.infrastructure.viewer.MovieDTO
+import org.joda.money.CurrencyUnit
+import org.joda.money.Money
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -12,6 +14,8 @@ import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.http.HttpStatus
 
 class VideosApplicationE2ETest extends AbstractE2ESpec {
+
+    static final USD_10 = Money.of(CurrencyUnit.USD, 10)
 
     @Autowired
     VideoRepository videoRepository
@@ -43,7 +47,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
         then:
         res.status == HttpStatus.OK
         res.result.asyncResult*.title == ['Harry Potter', 'Godfather']
-        res.result.asyncResult*.price == ['Harry Potter', 'Godfather']
+        res.result.asyncResult*.price.money == [USD_10, USD_10]
     }
 
     def "should fetch video info by title"() {
