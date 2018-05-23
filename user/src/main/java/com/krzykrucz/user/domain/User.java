@@ -1,12 +1,15 @@
 package com.krzykrucz.user.domain;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
+@EqualsAndHashCode(of = "userId")
 public class User {
 
     @Id

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "payment")
 interface CustomerClient {
 
-    @GetMapping("/current-customer")
+    @GetMapping("/customer/current")
     CustomerDTO getCurrentCustomer();
 
 }

@@ -1,11 +1,12 @@
 package com.krzykrucz.payment.domain;
 
 
-import io.vavr.collection.HashSet;
-import io.vavr.collection.Set;
+import com.google.common.collect.Sets;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 @Getter
 @EqualsAndHashCode(of = "customerId")
@@ -16,6 +17,6 @@ public class Customer {
 
     private final CustomerName customerName;
 
-    private Set<Movie> purchasedMovies = HashSet.empty();
+    private Set<Movie> purchasedMovies = Sets.newHashSet();
 
 }

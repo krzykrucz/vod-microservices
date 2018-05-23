@@ -1,11 +1,11 @@
 package com.krzykrucz.user.domain;
 
-import lombok.Data;
+import lombok.Value;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-@Data
+@Value
 public class UserId implements Serializable {
 
     private final UUID uuid;

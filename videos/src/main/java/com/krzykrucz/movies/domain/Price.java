@@ -1,12 +1,12 @@
 package com.krzykrucz.movies.domain;
 
-import lombok.Data;
+import lombok.Value;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-@Data
+@Value
 public class Price {
 
     private final Money money;

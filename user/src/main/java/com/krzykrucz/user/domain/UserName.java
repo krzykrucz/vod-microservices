@@ -1,8 +1,8 @@
 package com.krzykrucz.user.domain;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class UserName {
 
     private final String name;

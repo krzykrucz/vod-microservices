@@ -1,8 +1,8 @@
 package com.krzykrucz.payment.domain;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
-class CustomerName {
+@Value
+public class CustomerName {
     private final String name;
 }

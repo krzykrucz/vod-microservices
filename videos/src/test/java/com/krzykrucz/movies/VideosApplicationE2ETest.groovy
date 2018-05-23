@@ -43,6 +43,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
         then:
         res.status == HttpStatus.OK
         res.result.asyncResult*.title == ['Harry Potter', 'Godfather']
+        res.result.asyncResult*.price == ['Harry Potter', 'Godfather']
     }
 
     def "should fetch video info by title"() {

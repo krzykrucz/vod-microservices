@@ -1,6 +1,14 @@
 server:
   port: 8090
 
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: users
+          contentType: application/json
+
 eureka:
   client:
     serviceUrl:

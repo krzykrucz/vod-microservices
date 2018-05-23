@@ -1,11 +1,9 @@
 package com.krzykrucz.payment.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Value;
 import org.joda.money.Money;
 
-@AllArgsConstructor
-@Getter
+@Value
 public class Movie {
 
     private final Money price;

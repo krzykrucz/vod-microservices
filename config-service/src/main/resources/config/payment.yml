@@ -1,6 +1,13 @@
 server:
   port: 8091
 
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: users
+
 eureka:
   client:
     serviceUrl:
