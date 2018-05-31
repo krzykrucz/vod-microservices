@@ -1,0 +1,33 @@
+server:
+  port: 8060
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8061/eureka/
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+#      routes:
+#      - id: payment
+#        uri: lb://payment
+#        predicates:
+#        - Path=/payment/**
+#        filters:
+#        - RewritePath=/payment/(?<path>.*), /$\{path}
+#      - id: user
+#        uri: lb://user
+#        predicates:
+#        - Path=/user/**
+#        filters:
+#        - RewritePath=/user/(?<path>.*), /$\{path}
+#      - id: videos
+#        uri: lb://videos
+#        predicates:
+#        - Path=/videos/**
+#        filters:
+#        - RewritePath=/videos/(?<path>.*), /$\{path}
