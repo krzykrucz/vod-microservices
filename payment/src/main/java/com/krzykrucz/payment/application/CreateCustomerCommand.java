@@ -1,6 +1,6 @@
 package com.krzykrucz.payment.application;
 
-import com.krzykrucz.payment.domain.CustomerName;
+import com.krzykrucz.payment.domain.customer.CustomerName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

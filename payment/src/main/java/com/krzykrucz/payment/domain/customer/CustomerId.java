@@ -1,4 +1,4 @@
-package com.krzykrucz.payment.domain;
+package com.krzykrucz.payment.domain.customer;
 
 import lombok.Value;
 

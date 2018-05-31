@@ -5,8 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BuyMovieCommand {
+class PurchaseMovieCommand {
 
     private String movieTitle;
+
+    private String successViewUrl;
+
+    private String cancelViewUrl;
 
 }

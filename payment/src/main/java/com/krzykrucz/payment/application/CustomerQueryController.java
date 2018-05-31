@@ -1,7 +1,7 @@
 package com.krzykrucz.payment.application;
 
-import com.krzykrucz.payment.domain.CurrentCustomerProvider;
-import com.krzykrucz.payment.domain.Customer;
+import com.krzykrucz.payment.domain.customer.CurrentCustomerProvider;
+import com.krzykrucz.payment.domain.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
