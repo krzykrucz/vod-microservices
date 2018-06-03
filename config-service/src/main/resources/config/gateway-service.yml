@@ -12,7 +12,7 @@ spring:
       discovery:
         locator:
           enabled: true
-#      routes:
+      routes:
 #      - id: payment
 #        uri: lb://payment
 #        predicates:
@@ -25,9 +25,9 @@ spring:
 #        - Path=/user/**
 #        filters:
 #        - RewritePath=/user/(?<path>.*), /$\{path}
-#      - id: videos
-#        uri: lb://videos
-#        predicates:
-#        - Path=/videos/**
+      - id: videos
+        uri: lb://videos
+        predicates:
+        - Path=/videos/**
 #        filters:
 #        - RewritePath=/videos/(?<path>.*), /$\{path}
