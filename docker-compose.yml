@@ -1,0 +1,120 @@
+version: '2.2'
+
+services:
+
+  mongodb-videos:
+    image: mongo:latest
+    container_name: "mongodb-videos"
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles
+
+  mongodb-user:
+    image: mongo:latest
+    container_name: "mongodb-user"
+    ports:
+      - 27018:27017
+    command: mongod --smallfiles
+
+  mongodb-payment:
+    image: mongo:latest
+    container_name: "mongodb-payment"
+    ports:
+      - 27019:27017
+    command: mongod --smallfiles
+
+  zookeeper:
+    image: zookeeper
+    ports:
+      - 2181:2181
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+#
+  zipkin:
+      image: openzipkin/zipkin
+      container_name: zipkin
+      # Environment settings are defined here https://github.com/openzipkin/zipkin/tree/1.19.0/zipkin-server#environment-variables
+      environment:
+        - STORAGE_TYPE=mem
+        # Uncomment to disable scribe
+        # - SCRIBE_ENABLED=false
+        # Uncomment to enable self-tracing
+        # - SELF_TRACING_ENABLED=true
+        # Uncomment to enable debug logging
+        # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG
+      ports:
+        - 9411:9411
+
+  config-service:
+      image: vod/config-service
+      container_name: config-service
+      environment:
+        - SPRING_PROFILES_ACTIVE=native
+      ports:
+        - 8088:8088
+      healthcheck:
+        test: "exit 0"
+
+  discovery-service:
+      image: vod/discovery-service
+      container_name: discovery-service
+      ports:
+        - 8061:8061
+      depends_on:
+        config-service:
+          condition: service_healthy
+
+  user:
+      image: vod/user
+      container_name: user
+      environment:
+        - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      ports:
+        - "8090:8090"
+      depends_on:
+        config-service:
+          condition: service_healthy
+
+  payment:
+      image: vod/payment
+      container_name: payment
+      ports:
+        - "8091:8091"
+      depends_on:
+        config-service:
+          condition: service_healthy
+
+  videos:
+    image: vod/videos
+    restart: on-failure
+    container_name: videos
+    ports:
+      - "8092:8092"
+    depends_on:
+      config-service:
+        condition: service_healthy
+
+  gateway-service:
+    image: vod/gateway-service
+    container_name: gateway-service
+    ports:
+      - 8060:8060
+    links:
+      - config-service
+    depends_on:
+      config-service:
+        condition: service_healthy
+
+
+
+#  frontend:
+#    image: vod/frontend
+#    container_name: frontend

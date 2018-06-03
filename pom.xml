@@ -6,10 +6,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <properties>
-        <swagger.version>2.8.0</swagger.version>
-    </properties>
-
     <modules>
         <module>discovery-service</module>
         <module>config-service</module>

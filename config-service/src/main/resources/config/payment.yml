@@ -4,16 +4,24 @@ server:
 spring:
   cloud:
     stream:
+      kafka:
+        binder:
+          brokers: kafka
       bindings:
         input:
           destination: users
   zipkin:
-      base-url: http://localhost:9411/
+      base-url: http://zipkin:9411/
   sleuth:
       sampler:
         probability: 1
+  data:
+    mongodb:
+      host: mongodb-payment
+  kafka:
+    bootstrap-servers: kafka:9092
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8061/eureka/
+      defaultZone: http://discovery-service:8061/eureka/
