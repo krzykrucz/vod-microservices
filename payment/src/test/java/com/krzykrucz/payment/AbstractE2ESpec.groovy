@@ -10,7 +10,7 @@ import spockmvc.SpockMvcSpec
 
 //import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 @SpringBootTest
-@ContextConfiguration(classes = [PaymentApplication])
+@ContextConfiguration(classes = [PaymentApplication, PaypalTestConfig])
 @ActiveProfiles("test")
 abstract class AbstractE2ESpec extends SpockMvcSpec {
 

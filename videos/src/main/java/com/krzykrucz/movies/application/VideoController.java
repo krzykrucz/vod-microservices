@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/videos")
 public class VideoController {
@@ -32,13 +34,17 @@ public class VideoController {
     }
 
     @GetMapping("/all")
-    public Flux<VideoInfo> getAllVideoInfos() {
-        return Flux.fromIterable(videoRepository.findAllInfos());
+    public Flux<VideoInfoDTO> getAllVideoInfos() {
+        final Iterable<VideoInfo> allInfos = videoRepository.findAllInfos();
+        return Flux.fromIterable(videoRepository.findAllInfos())
+                .map(VideoInfoDTO::fromVideoInfo);
     }
 
     @GetMapping("/{title}")
-    public Mono<VideoInfo> getVideoInfo(@PathVariable("title") String title) {
-        return Mono.justOrEmpty(videoRepository.findVideoInfoByTitle(title));
+    public Mono<VideoInfoDTO> getVideoInfo(@PathVariable("title") String title) {
+        final Optional<VideoInfoDTO> videoInfoDTO = videoRepository.findVideoInfoByTitle(title)
+                .map(VideoInfoDTO::fromVideoInfo);
+        return Mono.justOrEmpty(videoInfoDTO);
     }
 
 }

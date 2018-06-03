@@ -1,9 +1,9 @@
-package com.krzykrucz.payment.domain;
+package com.krzykrucz.payment.domain.movie;
 
 import lombok.Value;
 import org.joda.money.Money;
 
 @Value
-class Price {
+public class Price {
     private final Money money;
 }

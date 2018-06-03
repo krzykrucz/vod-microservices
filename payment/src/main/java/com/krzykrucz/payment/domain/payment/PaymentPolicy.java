@@ -1,10 +1,12 @@
 package com.krzykrucz.payment.domain.payment;
 
-import com.krzykrucz.payment.domain.Movie;
+import com.krzykrucz.payment.domain.movie.Movie;
+import com.krzykrucz.payment.domain.movie.MovieRequestPayload;
+import io.vavr.control.Try;
 
 public interface PaymentPolicy {
 
-    void executePayment(Payment payment);
+    Try<Void> executePayment(Payment payment, PayerId payerId);
 
-    Payment createPaymentForMovie(Movie movie);
+    Try<Payment> createPaymentForMovie(Movie movie, MovieRequestPayload movieRequestPayload);
 }

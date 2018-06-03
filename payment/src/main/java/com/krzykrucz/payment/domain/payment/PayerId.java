@@ -3,7 +3,7 @@ package com.krzykrucz.payment.domain.payment;
 import lombok.Value;
 
 @Value
-class PayerId {
+public class PayerId {
 
     private final String id;
 }

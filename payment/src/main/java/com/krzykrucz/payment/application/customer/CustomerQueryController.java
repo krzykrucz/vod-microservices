@@ -1,4 +1,4 @@
-package com.krzykrucz.payment.application;
+package com.krzykrucz.payment.application.customer;
 
 import com.krzykrucz.payment.domain.customer.CurrentCustomerProvider;
 import com.krzykrucz.payment.domain.customer.Customer;

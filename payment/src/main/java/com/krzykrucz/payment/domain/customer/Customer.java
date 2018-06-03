@@ -3,11 +3,10 @@ package com.krzykrucz.payment.domain.customer;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.krzykrucz.payment.domain.Movie;
-import com.krzykrucz.payment.domain.payment.Payment;
-import com.krzykrucz.payment.domain.payment.PaymentId;
-import com.krzykrucz.payment.domain.payment.PaymentPolicy;
-import com.krzykrucz.payment.domain.payment.PaymentView;
+import com.krzykrucz.payment.domain.movie.Movie;
+import com.krzykrucz.payment.domain.movie.MovieRequestPayload;
+import com.krzykrucz.payment.domain.payment.*;
+import io.vavr.control.Try;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -38,13 +37,12 @@ public class Customer {
         return new Customer(CustomerId.newId(), name, paymentPolicy);
     }
 
-    public PaymentView requestMovie(Movie movie) {
+    public Try<PaymentView> requestMovie(Movie movie, MovieRequestPayload requestPayload) {
         purgePayments();
 
-        final Payment payment = paymentPolicy.createPaymentForMovie(movie);
-        currentPayments.put(payment.getPaymentId(), payment);
-
-        return payment.getPaymentView();
+        return paymentPolicy.createPaymentForMovie(movie, requestPayload)
+                .onSuccess(payment -> currentPayments.put(payment.getPaymentId(), payment))
+                .map(Payment::getPaymentView);
     }
 
     public void cancelMoviePayment(PaymentId paymentId) {
@@ -54,7 +52,7 @@ public class Customer {
         currentPayments.remove(paymentId);
     }
 
-    public void confirmMoviePayment(PaymentId paymentId) {
+    public Try<Void> confirmMoviePayment(PaymentId paymentId, PayerId payerId) {
         purgePayments();
 
         checkState(currentPayments.containsKey(paymentId));
@@ -62,7 +60,7 @@ public class Customer {
         currentPayments.get(paymentId).confirm();
 
         final Payment payment = currentPayments.get(paymentId);
-        paymentPolicy.executePayment(payment);
+        final Try<Void> executionResult = paymentPolicy.executePayment(payment, payerId);
 
         if (payment.getStatus() == Payment.Status.EXECUTED) {
             currentPayments.remove(paymentId);
@@ -73,6 +71,7 @@ public class Customer {
         } else {
             currentPayments.remove(paymentId);
         }
+        return executionResult;
     }
 
     private void purgePayments() {
