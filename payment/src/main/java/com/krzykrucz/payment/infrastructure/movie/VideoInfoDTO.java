@@ -1,13 +1,15 @@
 package com.krzykrucz.payment.infrastructure.movie;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.joda.money.Money;
 
 @Data
 @NoArgsConstructor
-class VideoInfoDTO {
+@AllArgsConstructor
+public class VideoInfoDTO {
 
     private String title;
 

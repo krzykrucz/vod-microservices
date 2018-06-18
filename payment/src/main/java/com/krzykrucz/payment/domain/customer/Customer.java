@@ -9,6 +9,7 @@ import com.krzykrucz.payment.domain.payment.*;
 import io.vavr.control.Try;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,7 @@ import static com.google.common.base.Preconditions.checkState;
 public class Customer {
 
     @Getter
+    @Id
     private final CustomerId customerId;
     @Getter
     private final Set<Movie> purchasedMovies = Sets.newHashSet();

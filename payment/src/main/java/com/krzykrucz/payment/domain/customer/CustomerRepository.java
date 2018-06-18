@@ -7,4 +7,6 @@ public interface CustomerRepository {
     void save(Customer customer);
 
     Optional<Customer> findOne(CustomerId customerId);
+
+    Optional<Customer> findOne(CustomerName name);
 }

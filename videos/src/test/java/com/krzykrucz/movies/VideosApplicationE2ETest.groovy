@@ -29,7 +29,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
     def setup() {
         loadVideo 'Harry Potter'
         loadVideo 'Godfather'
-        Mockito.when(customerClient.currentCustomer)
+        Mockito.when(customerClient.getCurrentCustomer('John Smith'))
                 .thenReturn(new CustomerDTO(
                 "John Smith",
                 ImmutableSet.of(new MovieDTO("Harry Potter"))))
@@ -47,7 +47,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
         then:
         res.status == HttpStatus.OK
         res.result.asyncResult*.title == ['Harry Potter', 'Godfather']
-        res.result.asyncResult*.price.money == [USD_10, USD_10]
+        res.result.asyncResult*.price == [USD_10, USD_10]
     }
 
     def "should fetch video info by title"() {
@@ -66,7 +66,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
     def "should fetch video content by title"() {
         when:
-        def res = get('/videos/content/Harry Potter')
+        def res = get('/videos/content/Harry Potter?viewer=John Smith')
 
         then:
         res.status == HttpStatus.OK
@@ -75,7 +75,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
     def "should not fetch not bought video content"() {
         when:
-        def res = get('/videos/content/Godfather')
+        def res = get('/videos/content/Godfather?viewer=John Smith')
 
         then:
         res.status == HttpStatus.OK

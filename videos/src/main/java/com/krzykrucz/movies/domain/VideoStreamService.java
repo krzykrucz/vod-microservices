@@ -16,12 +16,12 @@ public class VideoStreamService {
         this.videoRepository = videoRepository;
     }
 
-    public Optional<VideoContent> streamVideo(String videoTitle) {
+    public Optional<VideoContent> streamVideo(String videoTitle, ViewerName viewerName) {
         final Optional<VideoInfo> videoInfo = videoRepository.findVideoInfoByTitle(videoTitle);
         if (!videoInfo.isPresent()) {
             return Optional.empty();
         }
-        final boolean canViewerStreamVideo = viewerProvider.getCurrentViewer()
+        final boolean canViewerStreamVideo = viewerProvider.getCurrentViewer(viewerName)
                 .hasBoughtVideo(videoInfo.get().getVideoId());
         if (!canViewerStreamVideo) {
             return Optional.empty();

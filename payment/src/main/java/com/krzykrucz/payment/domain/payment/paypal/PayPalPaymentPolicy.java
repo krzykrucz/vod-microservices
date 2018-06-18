@@ -8,12 +8,14 @@ import com.paypal.api.payments.Links;
 import com.paypal.base.rest.PayPalRESTException;
 import io.vavr.control.Try;
 import org.joda.money.Money;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 import static com.krzykrucz.payment.domain.payment.paypal.PaypalMovieRequestProperty.PAYMENT_CANCEL_VIEW_URL;
 import static com.krzykrucz.payment.domain.payment.paypal.PaypalMovieRequestProperty.PAYMENT_SUCCESS_VIEW_URL;
 
+@Component
 public class PayPalPaymentPolicy implements PaymentPolicy {
 
     private final PayPalService payPalService;

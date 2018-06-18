@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "videos")
-interface VideosClient {
+public interface VideosClient {
 
     @GetMapping("/videos/{title}")
     VideoInfoDTO getVideoInfo(@PathVariable("title") String title);

@@ -1,14 +1,8 @@
 package com.krzykrucz.movies.application;
 
-import com.krzykrucz.movies.domain.VideoContent;
-import com.krzykrucz.movies.domain.VideoInfo;
-import com.krzykrucz.movies.domain.VideoRepository;
-import com.krzykrucz.movies.domain.VideoStreamService;
+import com.krzykrucz.movies.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,8 +23,8 @@ public class VideoController {
     }
 
     @GetMapping("/content/{title}")
-    public Mono<VideoContent> getVideoContent(@PathVariable("title") String title) {
-        return Mono.justOrEmpty(streamService.streamVideo(title));
+    public Mono<VideoContent> getVideoContent(@PathVariable("title") String title, @RequestParam("viewer") String viewerName) {
+        return Mono.justOrEmpty(streamService.streamVideo(title, new ViewerName(viewerName)));
     }
 
     @GetMapping("/all")

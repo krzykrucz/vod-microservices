@@ -2,24 +2,18 @@ package com.krzykrucz.payment.application.customer;
 
 import com.krzykrucz.payment.domain.customer.CustomerName;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-class CreateCustomerCommand {
+public class CreateCustomerCommand {
 
-    private UserName userName;
+    private CustomerNameDTO userName;
 
     public CustomerName getCustomerName() {
         return new CustomerName(userName.getName());
-    }
-
-    @Data
-    private class UserName {
-        private String name;
     }
 
 }

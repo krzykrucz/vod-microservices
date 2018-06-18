@@ -22,7 +22,7 @@ public class CustomerCommandHandler {
     }
 
     @StreamListener(Sink.INPUT)
-    void receive(Message<CreateCustomerCommand> message) {
+    public void receive(Message<CreateCustomerCommand> message) {
         final CreateCustomerCommand createCustomerCommand = message.getPayload();
         final CustomerName newCustomerName = createCustomerCommand.getCustomerName();
         final Customer newCustomer = customerFactory.newCustomerWithPaypalPaymentPolicy(newCustomerName);

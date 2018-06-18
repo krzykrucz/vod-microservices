@@ -2,6 +2,7 @@ package com.krzykrucz.payment.infrastructure;
 
 import com.krzykrucz.payment.domain.customer.Customer;
 import com.krzykrucz.payment.domain.customer.CustomerId;
+import com.krzykrucz.payment.domain.customer.CustomerName;
 import com.krzykrucz.payment.domain.customer.CustomerRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Optional<Customer> findOne(CustomerId customerId) {
         return mongoCustomerRepository.findById(customerId);
+    }
+
+    @Override
+    public Optional<Customer> findOne(CustomerName customerName) {
+        return mongoCustomerRepository.findByCustomerName(customerName);
     }
 
 }

@@ -2,6 +2,7 @@ package com.krzykrucz.payment.domain.payment;
 
 import com.krzykrucz.payment.domain.movie.Movie;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -13,11 +14,14 @@ public class Payment {
 
     private final static Duration MAX_PAYMENT_DURATION = Duration.ofMinutes(15);
 
+    @Id
     private final PaymentId paymentId;
     private PayerId payerId;
     private final PaymentView paymentView;
     private final Movie paidMovie;
     private final Instant creationTime;
+
+    // TODO converter
     private final Clock clock;
     private Status status = Status.CREATED;
 
@@ -31,6 +35,14 @@ public class Payment {
 
     public Payment(PaymentId paymentId, PaymentView paymentView, Movie paidMovie) {
         this(paymentId, paymentView, paidMovie, Clock.systemUTC());
+    }
+
+    private Payment() {
+        paymentId = null;
+        paidMovie = null;
+        paymentView = null;
+        creationTime = null;
+        clock = null;
     }
 
     public void confirm() {

@@ -1,52 +1,49 @@
 package com.krzykrucz.payment.application.payment;
 
-import com.krzykrucz.payment.domain.customer.CurrentCustomerProvider;
 import com.krzykrucz.payment.domain.customer.Customer;
+import com.krzykrucz.payment.domain.customer.CustomerProvider;
 import com.krzykrucz.payment.domain.customer.CustomerRepository;
 import com.krzykrucz.payment.domain.movie.Movie;
 import com.krzykrucz.payment.domain.movie.MovieRequestPayload;
-import com.krzykrucz.payment.domain.payment.PayerId;
-import com.krzykrucz.payment.domain.payment.PaymentId;
 import com.krzykrucz.payment.domain.payment.PaymentView;
 import io.vavr.control.Try;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 class PaymentApplicationService {
 
-    private final CurrentCustomerProvider currentCustomerProvider;
+    private final CustomerProvider customerProvider;
 
     private final CustomerRepository customerRepository;
 
     private final MovieFinder movieFinder;
 
-    public PaymentApplicationService(CurrentCustomerProvider currentCustomerProvider, CustomerRepository customerRepository, MovieFinder movieFinder) {
-        this.currentCustomerProvider = currentCustomerProvider;
+    public PaymentApplicationService(CustomerProvider customerProvider, CustomerRepository customerRepository, MovieFinder movieFinder) {
+        this.customerProvider = customerProvider;
         this.customerRepository = customerRepository;
         this.movieFinder = movieFinder;
     }
 
-    Try<PaymentView> buyMovie(@RequestBody PurchaseMovieWithPaypalCommand command) {
+    Try<PaymentView> buyMovie(PurchaseMovieWithPaypalCommand command) {
         final Movie movieToPurchase = movieFinder.findMovieByTitle(command.getMovieTitle());
         final MovieRequestPayload movieRequestPayload = command.getPayload();
-        final Customer currentCustomer = currentCustomerProvider.getCurrentCustomer();
+        final Customer currentCustomer = customerProvider.getCustomerByName(command.getCurrentCustomerName());
         return currentCustomer
                 .requestMovie(movieToPurchase, movieRequestPayload)
                 .onSuccess($ -> customerRepository.save(currentCustomer));
     }
 
-    Try<Void> executePayment(String paymentId, String payerId) {
-        final Customer currentCustomer = currentCustomerProvider.getCurrentCustomer();
+    Try<Void> executePayment(ExecutePaymentCommand command) {
+        final Customer currentCustomer = customerProvider
+                .getCustomerByName(command.getCustomerName());
         return currentCustomer
-                .confirmMoviePayment(new PaymentId(paymentId), new PayerId(payerId))
+                .confirmMoviePayment(command.getPaymentId(), command.getPayerId())
                 .onSuccess($ -> customerRepository.save(currentCustomer));
     }
 
-    void cancelPayment(String paymentId) {
-        final Customer currentCustomer = currentCustomerProvider.getCurrentCustomer();
-        currentCustomer
-                .cancelMoviePayment(new PaymentId(paymentId));
+    void cancelPayment(CancelPaymentCommand command) {
+        final Customer currentCustomer = customerProvider.getCustomerByName(command.getCurrentCustomerName());
+        currentCustomer.cancelMoviePayment(command.getPaymentId());
         customerRepository.save(currentCustomer);
     }
 
