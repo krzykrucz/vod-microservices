@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ class VideoRepositoryImpl implements VideoRepository {
     }
 
     @Override
-    public Iterable<VideoInfo> findAllInfos() {
+    public List<VideoInfo> findAllInfos() {
         return persistentVideoMongoRepository.findAll().stream()
                 .map(this::toVideoInfo)
                 .collect(Collectors.toList());

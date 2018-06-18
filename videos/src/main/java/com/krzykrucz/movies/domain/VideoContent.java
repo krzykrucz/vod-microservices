@@ -2,6 +2,7 @@ package com.krzykrucz.movies.domain;
 
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import static com.google.common.io.ByteStreams.toByteArray;
 
 public class VideoContent {
 
+    @Getter
     private final byte[] byteContent;
 
     private VideoContent(byte[] byteContent) {

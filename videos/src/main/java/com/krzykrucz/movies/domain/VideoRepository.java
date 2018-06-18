@@ -1,5 +1,6 @@
 package com.krzykrucz.movies.domain;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VideoRepository {
@@ -9,6 +10,6 @@ public interface VideoRepository {
 
     Optional<VideoContent> findVideoContentByTitle(String title);
 
-    Iterable<VideoInfo> findAllInfos();
+    List<VideoInfo> findAllInfos();
 
 }

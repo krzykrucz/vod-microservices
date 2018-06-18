@@ -5,8 +5,6 @@ import com.krzykrucz.movies.domain.*
 import com.krzykrucz.movies.infrastructure.viewer.CustomerClient
 import com.krzykrucz.movies.infrastructure.viewer.CustomerDTO
 import com.krzykrucz.movies.infrastructure.viewer.MovieDTO
-import org.joda.money.CurrencyUnit
-import org.joda.money.Money
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -14,8 +12,6 @@ import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.http.HttpStatus
 
 class VideosApplicationE2ETest extends AbstractE2ESpec {
-
-    static final USD_10 = Money.of(CurrencyUnit.USD, 10)
 
     @Autowired
     VideoRepository videoRepository
@@ -46,8 +42,8 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
         then:
         res.status == HttpStatus.OK
-        res.result.asyncResult*.title == ['Harry Potter', 'Godfather']
-        res.result.asyncResult*.price == [USD_10, USD_10]
+        res.json*.title == ['Harry Potter', 'Godfather']
+        res.json*.price.pretty == ['$10.00', '$10.00']
     }
 
     def "should fetch video info by title"() {
@@ -56,7 +52,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
         then:
         res.status == HttpStatus.OK
-        res.result.asyncResult.title == title
+        res.json.title == title
 
         where:
         title          || _
@@ -70,7 +66,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
         then:
         res.status == HttpStatus.OK
-        res.result.asyncResult.byteContent.length == 2107842
+        res.json.byteContent.size() == 2810456
     }
 
     def "should not fetch not bought video content"() {
@@ -78,8 +74,17 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
         def res = get('/videos/content/Godfather?viewer=John Smith')
 
         then:
-        res.status == HttpStatus.OK
-        res.result.asyncResult == null
+        res.status == HttpStatus.FORBIDDEN
+        res.content == 'VIDEO_NOT_BOUGHT'
+    }
+
+    def "should not fetch non-existent video content"() {
+        when:
+        def res = get('/videos/content/Godfather2?viewer=John Smith')
+
+        then:
+        res.status == HttpStatus.NOT_FOUND
+        res.content == 'VIDEO_NOT_EXISTS'
     }
 
     private def loadVideo(String title) {

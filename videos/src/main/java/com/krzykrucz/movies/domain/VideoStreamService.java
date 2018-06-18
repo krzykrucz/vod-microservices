@@ -1,5 +1,6 @@
 package com.krzykrucz.movies.domain;
 
+import io.vavr.control.Either;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,17 +17,19 @@ public class VideoStreamService {
         this.videoRepository = videoRepository;
     }
 
-    public Optional<VideoContent> streamVideo(String videoTitle, ViewerName viewerName) {
+    public Either<VideoStreamFailure, VideoContent> streamVideo(String videoTitle, ViewerName viewerName) {
         final Optional<VideoInfo> videoInfo = videoRepository.findVideoInfoByTitle(videoTitle);
         if (!videoInfo.isPresent()) {
-            return Optional.empty();
+            return Either.left(VideoStreamFailure.VIDEO_NOT_EXISTS);
         }
         final boolean canViewerStreamVideo = viewerProvider.getCurrentViewer(viewerName)
                 .hasBoughtVideo(videoInfo.get().getVideoId());
         if (!canViewerStreamVideo) {
-            return Optional.empty();
+            return Either.left(VideoStreamFailure.VIDEO_NOT_BOUGHT);
         }
-        return videoRepository.findVideoContentByTitle(videoTitle);
+        return videoRepository.findVideoContentByTitle(videoTitle)
+                .map(Either::<VideoStreamFailure, VideoContent>right)
+                .orElseGet(() -> Either.left(VideoStreamFailure.VIDEO_NOT_EXISTS));
     }
 
 }
