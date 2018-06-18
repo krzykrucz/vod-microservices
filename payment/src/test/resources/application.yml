@@ -2,3 +2,7 @@ spring:
   mvc:
     favicon:
       enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false

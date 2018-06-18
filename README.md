@@ -9,11 +9,15 @@ Requirements:
 * running zookeeper
 * running kafka
 
-![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/VoD.jpg)
+![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/images/VoD.jpg)
 
  <br />
  
 ### Payments domain (event storming session)
 
-![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/Payments_event-storming.jpg)
+![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/images/Payments_event-storming.jpg)
+
+### Paypal payment logic flow chart
+
+![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/images/flow_paypal.jpg)
 

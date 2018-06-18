@@ -3,11 +3,11 @@ package com.krzykrucz.payment.domain.payment;
 import com.krzykrucz.payment.domain.movie.Movie;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Optional;
 
 @Getter
 public class Payment {
@@ -20,21 +20,24 @@ public class Payment {
     private final PaymentView paymentView;
     private final Movie paidMovie;
     private final Instant creationTime;
-
-    // TODO converter
-    private final Clock clock;
     private Status status = Status.CREATED;
+    @Transient
+    private final Clock timeSource;
 
-    public Payment(PaymentId paymentId, PaymentView paymentView, Movie paidMovie, Clock clock) {
+    public Payment(PaymentId paymentId, PaymentView paymentView, Movie paidMovie) {
         this.paymentId = paymentId;
         this.paymentView = paymentView;
         this.paidMovie = paidMovie;
-        this.creationTime = clock.instant();
-        this.clock = clock;
+        this.timeSource = Clock.systemUTC();
+        this.creationTime = timeSource.instant();
     }
 
-    public Payment(PaymentId paymentId, PaymentView paymentView, Movie paidMovie) {
-        this(paymentId, paymentView, paidMovie, Clock.systemUTC());
+    Payment(PaymentId paymentId, PaymentView paymentView, Movie paidMovie, Clock timeSource) {
+        this.paymentId = paymentId;
+        this.paymentView = paymentView;
+        this.paidMovie = paidMovie;
+        this.timeSource = timeSource;
+        this.creationTime = timeSource.instant();
     }
 
     private Payment() {
@@ -42,7 +45,7 @@ public class Payment {
         paidMovie = null;
         paymentView = null;
         creationTime = null;
-        clock = null;
+        timeSource = Clock.systemUTC();
     }
 
     public void confirm() {
@@ -59,13 +62,9 @@ public class Payment {
     }
 
     public boolean isPurgable() {
-        final Instant now = clock.instant();
+        final Instant now = timeSource.instant();
         final Duration paymentLifeTime = Duration.between(creationTime, now);
         return paymentLifeTime.compareTo(MAX_PAYMENT_DURATION) > 0;
-    }
-
-    public Optional<PayerId> getPayerId() {
-        return Optional.ofNullable(payerId);
     }
 
     public enum Status {

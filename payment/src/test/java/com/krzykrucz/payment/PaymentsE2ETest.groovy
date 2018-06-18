@@ -3,6 +3,8 @@ package com.krzykrucz.payment
 import com.krzykrucz.payment.application.customer.CreateCustomerCommand
 import com.krzykrucz.payment.application.customer.CustomerCommandHandler
 import com.krzykrucz.payment.application.customer.CustomerNameDTO
+import com.krzykrucz.payment.domain.customer.CustomerName
+import com.krzykrucz.payment.domain.customer.CustomerRepository
 import com.krzykrucz.payment.domain.payment.PayerId
 import com.krzykrucz.payment.domain.payment.PaymentId
 import com.krzykrucz.payment.domain.payment.paypal.PayPalService
@@ -33,10 +35,13 @@ class PaymentsE2ETest extends AbstractE2ESpec {
     @Autowired
     PayPalService payPalService
 
+    @Autowired
+    CustomerRepository customerRepository
+
     def "should follow happy path"() {
         given:
         videosClient.getVideoInfo('Harry Potter') >> new VideoInfoDTO('Harry Potter', USD_10)
-        payPalService.createPayment(_, _, _, _) >> stubPayment(A_PAYMENT_ID, 'viewUrl')
+        def stubPayment = stubPayment(A_PAYMENT_ID, 'viewUrl')
 
         createCustomer 'Barbossa'
 
@@ -56,15 +61,21 @@ class PaymentsE2ETest extends AbstractE2ESpec {
         ]
         def successResponse = post('/payment/success', executePaymentRequest)
 
-        then:
+        then: "requests should be successful"
         buyResponse.status == OK
         buyResponse.json.viewUrl == 'viewUrl'
         successResponse.status == OK
-        1 * payPalService.createPayment(USD_10, '', 'cancelUrl', 'successUrl')
+        1 * payPalService.createPayment(USD_10, 'Payment for Harry Potter', 'cancelUrl', 'successUrl') >> stubPayment
         1 * payPalService.executePayment(new PaymentId(A_PAYMENT_ID), new PayerId(A_PAYER_ID))
+
+        and: "customer should be in good state"
+        def customer = getCustomer 'Barbossa'
+        customer.get().purchasedMovies*.title == ['Harry Potter']
+        customer.get().purchasedMovies*.price.money == [USD_10]
+
     }
 
-    Payment stubPayment(paymentId, viewUrl) {
+    static Payment stubPayment(paymentId, viewUrl) {
         def payment = new Payment()
         payment.setId(paymentId)
         payment.setLinks([new Links(viewUrl, 'approval_url')])
@@ -74,6 +85,10 @@ class PaymentsE2ETest extends AbstractE2ESpec {
     private createCustomer(name) {
         def command = new CreateCustomerCommand(new CustomerNameDTO(name))
         handler.receive(MessageBuilder.withPayload(command).build())
+    }
+
+    private getCustomer(name) {
+        customerRepository.findOne new CustomerName(name)
     }
 
 }
