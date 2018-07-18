@@ -24,7 +24,7 @@ public class ViewerProviderImpl implements ViewerProvider {
     @Override
     public Viewer getCurrentViewer(ViewerName viewerName) {
         final CustomerDTO currentCustomer = customerClient.getCurrentCustomer(viewerName.getName());
-        final Set<VideoId> videosIds = currentCustomer.getBoughtMovies().stream()
+        final Set<VideoId> videosIds = currentCustomer.getPurchasedMovies().stream()
                 .map(this::getIdForMovieDTO)
                 .filter(Optional::isPresent)
                 .map(Optional::get)

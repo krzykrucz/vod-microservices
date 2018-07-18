@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+    <head>
+        <title>Login page</title>
+    </head>
+    <body>
+        <h1>All videos</h1>
+        <div th:text="'user: ' + ${username}"></div>
+        <p th:if="${error}" class="error" th:text="'Error watching' + ${error}">Wrong user or password</p>
+        <table id="myTableId" dt:table="true">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="video : ${videos}">
+                <td th:text="${video.title}">1</td>
+                <td th:text="${video.price.pretty}">Doe</td>
+                <td>
+                    <form action="#" th:action="@{/watch/} + ${{video.title}}" method="post">
+                        <button type="submit">Watch</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

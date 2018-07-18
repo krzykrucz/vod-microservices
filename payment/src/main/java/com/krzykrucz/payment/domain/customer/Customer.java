@@ -13,15 +13,15 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkState;
 
 @EqualsAndHashCode(of = "customerId")
 public class Customer {
 
-    @Getter
     @Id
-    private final CustomerId customerId;
+    private final String customerId;
     @Getter
     private final Set<Movie> purchasedMovies = Sets.newHashSet();
     private final PaymentPolicy paymentPolicy;
@@ -29,14 +29,18 @@ public class Customer {
     @Getter
     private CustomerName customerName;
 
-    private Customer(CustomerId customerId, CustomerName customerName, PaymentPolicy paymentPolicy) {
+    private Customer(String customerId, CustomerName customerName, PaymentPolicy paymentPolicy) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.paymentPolicy = paymentPolicy;
     }
 
     public static Customer createNew(CustomerName name, PaymentPolicy paymentPolicy) {
-        return new Customer(CustomerId.newId(), name, paymentPolicy);
+        return new Customer(CustomerId.newId().getUuid().toString(), name, paymentPolicy);
+    }
+
+    public CustomerId getCustomerId() {
+        return new CustomerId(UUID.fromString(customerId));
     }
 
     public Try<PaymentView> requestMovie(Movie movie, MovieRequestPayload requestPayload) {
@@ -65,8 +69,6 @@ public class Customer {
         final Try<Void> executionResult = paymentPolicy.executePayment(payment, payerId);
 
         if (payment.getStatus() == Payment.Status.EXECUTED) {
-            currentPayments.remove(paymentId);
-
             final Movie purchasedMovie = payment.getPaidMovie();
             purchasedMovies.add(purchasedMovie);
 

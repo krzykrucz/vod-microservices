@@ -23,7 +23,7 @@ public class VideoStreamService {
             return Either.left(VideoStreamFailure.VIDEO_NOT_EXISTS);
         }
         final boolean canViewerStreamVideo = viewerProvider.getCurrentViewer(viewerName)
-                .hasBoughtVideo(videoInfo.get().getVideoId());
+                .hasBoughtVideo(videoInfo.get());
         if (!canViewerStreamVideo) {
             return Either.left(VideoStreamFailure.VIDEO_NOT_BOUGHT);
         }

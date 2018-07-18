@@ -62,7 +62,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
     def "should fetch video content by title"() {
         when:
-        def res = get('/videos/content/Harry Potter?viewer=John Smith')
+        def res = get('/videos/content/Harry Potter/John Smith')
 
         then:
         res.status == HttpStatus.OK
@@ -71,7 +71,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
     def "should not fetch not bought video content"() {
         when:
-        def res = get('/videos/content/Godfather?viewer=John Smith')
+        def res = get('/videos/content/Godfather/John Smith')
 
         then:
         res.status == HttpStatus.FORBIDDEN
@@ -80,7 +80,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
     def "should not fetch non-existent video content"() {
         when:
-        def res = get('/videos/content/Godfather2?viewer=John Smith')
+        def res = get('/videos/content/Godfather2/John Smith')
 
         then:
         res.status == HttpStatus.NOT_FOUND

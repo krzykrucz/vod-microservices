@@ -13,16 +13,16 @@ spring:
         locator:
           enabled: true
       routes:
-#      - id: payment
-#        uri: lb://payment
-#        predicates:
-#        - Path=/payment/**
+      - id: payment
+        uri: lb://payment
+        predicates:
+        - Path=/payment/**
 #        filters:
 #        - RewritePath=/payment/(?<path>.*), /$\{path}
-#      - id: user
-#        uri: lb://user
-#        predicates:
-#        - Path=/user/**
+      - id: user
+        uri: lb://user
+        predicates:
+        - Path=/user/**
 #        filters:
 #        - RewritePath=/user/(?<path>.*), /$\{path}
       - id: videos

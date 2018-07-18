@@ -19,4 +19,9 @@ public class PasswordEncoderImpl implements PasswordEncoder {
     public Password encode(String passwordText) {
         return new Password(passwordEncoder.encode(passwordText));
     }
+
+    @Override
+    public boolean passwordMatchesWithString(Password password, String rawString) {
+        return passwordEncoder.matches(rawString, password.getPassword());
+    }
 }

@@ -2,7 +2,6 @@ package com.krzykrucz.payment
 
 import com.krzykrucz.payment.application.customer.CreateCustomerCommand
 import com.krzykrucz.payment.application.customer.CustomerCommandHandler
-import com.krzykrucz.payment.application.customer.CustomerNameDTO
 import com.krzykrucz.payment.domain.customer.CustomerName
 import com.krzykrucz.payment.domain.customer.CustomerRepository
 import com.krzykrucz.payment.domain.payment.PayerId
@@ -83,7 +82,7 @@ class PaymentsE2ETest extends AbstractE2ESpec {
     }
 
     private createCustomer(name) {
-        def command = new CreateCustomerCommand(new CustomerNameDTO(name))
+        def command = new CreateCustomerCommand(name)
         handler.receive(MessageBuilder.withPayload(command).build())
     }
 

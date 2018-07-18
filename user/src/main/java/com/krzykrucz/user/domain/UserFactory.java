@@ -1,6 +1,6 @@
 package com.krzykrucz.user.domain;
 
-import com.krzykrucz.user.infrastructure.UserRepository;
+import com.krzykrucz.user.infrastructure.UserMongoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -10,11 +10,11 @@ public class UserFactory {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final UserRepository userRepository;
+    private final UserMongoRepository userRepository;
 
     private final EventPublisher eventPublisher;
 
-    public UserFactory(PasswordEncoder passwordEncoder, UserRepository userRepository, EventPublisher eventPublisher) {
+    public UserFactory(PasswordEncoder passwordEncoder, UserMongoRepository userRepository, EventPublisher eventPublisher) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;

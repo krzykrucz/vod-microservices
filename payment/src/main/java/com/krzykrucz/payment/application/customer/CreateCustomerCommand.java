@@ -1,19 +1,25 @@
 package com.krzykrucz.payment.application.customer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.krzykrucz.payment.domain.customer.CustomerName;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
+import java.util.Map;
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCustomerCommand {
 
-    private CustomerNameDTO userName;
+    private String userName;
+
+    @JsonProperty("userName")
+    void setUserName(Map<String, Object> userName) {
+        this.userName = (String) userName.get("name");
+    }
 
     public CustomerName getCustomerName() {
-        return new CustomerName(userName.getName());
+        return new CustomerName(userName);
     }
 
 }

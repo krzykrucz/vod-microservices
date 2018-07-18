@@ -18,4 +18,8 @@ public class Price {
         checkArgument(value > 0);
         return new Price(Money.of(CurrencyUnit.USD, value));
     }
+
+    public boolean isZero() {
+        return money.isZero();
+    }
 }

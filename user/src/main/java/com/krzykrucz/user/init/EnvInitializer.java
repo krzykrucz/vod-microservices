@@ -2,7 +2,7 @@ package com.krzykrucz.user.init;
 
 import com.krzykrucz.user.domain.UserFactory;
 import com.krzykrucz.user.domain.UserName;
-import com.krzykrucz.user.infrastructure.UserRepository;
+import com.krzykrucz.user.infrastructure.UserMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class EnvInitializer implements ApplicationRunner {
 
     @Autowired
-    UserRepository userRepository;
+    UserMongoRepository userRepository;
 
     @Autowired
     UserFactory userFactory;

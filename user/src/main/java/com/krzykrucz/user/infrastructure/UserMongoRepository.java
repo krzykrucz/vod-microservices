@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.Optional;
 
 @RepositoryRestResource
-public interface UserRepository extends MongoRepository<User, UserId> {
+public interface UserMongoRepository extends MongoRepository<User, UserId> {
 
     Optional<User> findByName_Name(@Param("name") String userName);
 }

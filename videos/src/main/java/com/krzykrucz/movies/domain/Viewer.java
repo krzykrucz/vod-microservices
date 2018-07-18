@@ -10,7 +10,7 @@ public class Viewer {
         this.boughtVideos = boughtVideos;
     }
 
-    public boolean hasBoughtVideo(VideoId videoId) {
-        return boughtVideos.contains(videoId);
+    public boolean hasBoughtVideo(VideoInfo videoInfo) {
+        return videoInfo.getPrice().isZero() || boughtVideos.contains(videoInfo.getVideoId());
     }
 }

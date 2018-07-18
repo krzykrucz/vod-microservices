@@ -24,7 +24,7 @@ class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public Optional<Customer> findOne(CustomerId customerId) {
-        return mongoCustomerRepository.findById(customerId);
+        return mongoCustomerRepository.findById(customerId.getUuid().toString());
     }
 
     @Override
