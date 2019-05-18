@@ -18,7 +18,7 @@ public class VideoStreamService {
     }
 
     public Either<VideoStreamFailure, VideoContent> streamVideo(String videoTitle, ViewerName viewerName) {
-        final Optional<VideoInfo> videoInfo = videoRepository.findVideoInfoByTitle(videoTitle);
+        final Optional<VideoDetails> videoInfo = videoRepository.findVideoInfoByTitle(videoTitle);
         if (!videoInfo.isPresent()) {
             return Either.left(VideoStreamFailure.VIDEO_NOT_EXISTS);
         }

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text="Watching ${title}"></title>
     </head>
     <body>
+        <div th:text="'Watching ' + ${title}"></div>
         <p th:text="${content}"></p>
     </body>
 </html>

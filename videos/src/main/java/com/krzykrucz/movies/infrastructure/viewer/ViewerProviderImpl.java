@@ -34,7 +34,7 @@ public class ViewerProviderImpl implements ViewerProvider {
 
     private Optional<VideoId> getIdForMovieDTO(MovieDTO movie) {
         return videoRepository.findVideoInfoByTitle(movie.getTitle())
-                .map(VideoInfo::getVideoId);
+                .map(VideoDetails::getVideoId);
     }
 
 }

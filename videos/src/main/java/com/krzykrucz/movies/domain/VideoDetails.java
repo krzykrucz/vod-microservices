@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode(of = "videoId")
 @AllArgsConstructor
-public class VideoInfo {
+public class VideoDetails {
 
     private final VideoId videoId;
 

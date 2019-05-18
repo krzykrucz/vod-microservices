@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VideoRepository {
-    void save(VideoInfo videoInfo, VideoContent content);
+    void save(VideoDetails videoDetails, VideoContent content);
 
-    Optional<VideoInfo> findVideoInfoByTitle(String title);
+    Optional<VideoDetails> findVideoInfoByTitle(String title);
 
     Optional<VideoContent> findVideoContentByTitle(String title);
 
-    List<VideoInfo> findAllInfos();
+    List<VideoDetails> findAllInfos();
 
 }

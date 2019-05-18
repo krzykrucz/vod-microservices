@@ -23,20 +23,26 @@ public class EnvInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if (videoRepository.findVideoInfoByTitle("Harry Potter").isPresent()) {
-            return;
-        }
         final File videoFile = new File(getClass()
                 .getClassLoader()
                 .getResource("videos/sample.mp4")
                 .getFile());
-        final VideoInfo harryPotterInfo = new VideoInfo(
+        final VideoDetails harryPotterInfo = new VideoDetails(
                 new VideoId(UUID.fromString("be6d38e8-d5bd-4929-9c0c-56879f91a172")),
                 "Harry Potter",
                 Price.fromUSD(10)
         );
+        final VideoDetails spidermanInfo = new VideoDetails(
+                new VideoId(UUID.randomUUID()),
+                "Spiderman",
+                Price.fromUSD(0)
+        );
         final VideoContent harryPotterContent = VideoContent.fromFile(videoFile);
-        videoRepository.save(harryPotterInfo,
-                harryPotterContent);
+        if (!videoRepository.findVideoInfoByTitle("Harry Potter").isPresent()) {
+            videoRepository.save(harryPotterInfo, harryPotterContent);
+        }
+        if (!videoRepository.findVideoInfoByTitle("Spiderman").isPresent()) {
+            videoRepository.save(spidermanInfo, harryPotterContent);
+        }
     }
 }

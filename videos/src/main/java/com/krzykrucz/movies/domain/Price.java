@@ -15,7 +15,7 @@ public class Price {
     private final Money money;
 
     public static Price fromUSD(int value) {
-        checkArgument(value > 0);
+        checkArgument(value >= 0);
         return new Price(Money.of(CurrencyUnit.USD, value));
     }
 

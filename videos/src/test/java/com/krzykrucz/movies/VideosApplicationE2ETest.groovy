@@ -89,7 +89,7 @@ class VideosApplicationE2ETest extends AbstractE2ESpec {
 
     private def loadVideo(String title) {
         def videoFile = new File(getClass().getClassLoader().getResource('videos/sample.mp4').getFile())
-        def sampleVideoInfo = new VideoInfo(
+        def sampleVideoInfo = new VideoDetails(
                 new VideoId(UUID.randomUUID()),
                 title,
                 Price.fromUSD(10)

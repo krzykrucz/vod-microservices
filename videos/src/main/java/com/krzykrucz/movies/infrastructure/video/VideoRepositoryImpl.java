@@ -1,8 +1,8 @@
 package com.krzykrucz.movies.infrastructure.video;
 
 import com.krzykrucz.movies.domain.VideoContent;
+import com.krzykrucz.movies.domain.VideoDetails;
 import com.krzykrucz.movies.domain.VideoId;
-import com.krzykrucz.movies.domain.VideoInfo;
 import com.krzykrucz.movies.domain.VideoRepository;
 import io.vavr.control.Try;
 import org.springframework.stereotype.Repository;
@@ -26,21 +26,21 @@ class VideoRepositoryImpl implements VideoRepository {
     }
 
     @Override
-    public void save(VideoInfo videoInfo, VideoContent content) {
+    public void save(VideoDetails videoDetails, VideoContent content) {
         final PersistentVideoInfo persistentVideoInfo = new PersistentVideoInfo(
-                videoInfo.getVideoId().getUuid(),
-                videoInfo.getTitle(),
-                videoInfo.getPrice());
+                videoDetails.getVideoId().getUuid(),
+                videoDetails.getTitle(),
+                videoDetails.getPrice());
         try (final InputStream contentStream = content.toStream()) {
             videoContentStore.setContent(persistentVideoInfo, contentStream);
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't save videoInfo of title: " + videoInfo.getTitle());
+            throw new RuntimeException("Couldn't save videoDetails of title: " + videoDetails.getTitle());
         }
         persistentVideoMongoRepository.save(persistentVideoInfo);
     }
 
     @Override
-    public Optional<VideoInfo> findVideoInfoByTitle(String title) {
+    public Optional<VideoDetails> findVideoInfoByTitle(String title) {
         return persistentVideoMongoRepository.findByTitle(title)
                 .map(this::toVideoInfo);
     }
@@ -54,14 +54,14 @@ class VideoRepositoryImpl implements VideoRepository {
     }
 
     @Override
-    public List<VideoInfo> findAllInfos() {
+    public List<VideoDetails> findAllInfos() {
         return persistentVideoMongoRepository.findAll().stream()
                 .map(this::toVideoInfo)
                 .collect(Collectors.toList());
     }
 
-    private VideoInfo toVideoInfo(PersistentVideoInfo persistentVideoInfo) {
-        return new VideoInfo(
+    private VideoDetails toVideoInfo(PersistentVideoInfo persistentVideoInfo) {
+        return new VideoDetails(
                 new VideoId(persistentVideoInfo.getVideoId()),
                 persistentVideoInfo.getTitle(),
                 persistentVideoInfo.getPrice());
