@@ -1,17 +1,16 @@
 # Video On Demand
 
+Video-on-demand application powered by microservice architecture and created according to Domain-driven design principles.
 
-### Running
-Requirements:
-* running zipkin server
-* running mongod
-* running zookeeper
-* running kafka
-* deploy spring boot in every of the following catalogs (command: mvn spring-boot:run)
-    * config-service
-    * discovery-service
-    * payment
-    * user
-    * videos
-    * gateway-service
-    * frontend
+Build everything with: `mvn clean install`
+
+Run everything with: `docker-compose up`
+
+![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/images/VoD.jpg)
+
+ <br />
+ 
+### Payments domain (event storming session)
+
+![alt text](https://raw.githubusercontent.com/krzykrucz/vod-microservices/master/images/Payments_event-storming.jpg)
+
